@@ -1,6 +1,7 @@
 package com.example.sns.service;
 
 import com.example.sns.entity.CustomUserDetails;
+import com.example.sns.entity.User;
 import com.example.sns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,12 @@ public class JpaUserDetailsManager implements UserDetailsManager {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User userEntity = userRepository.findByUsername(username).orElseThrow(
+                () -> new UsernameNotFoundException(username));
+        return CustomUserDetails.fromEntity(userEntity);
+    }
 
     @Override
     public void updateUser(UserDetails user) {
@@ -49,10 +56,5 @@ public class JpaUserDetailsManager implements UserDetailsManager {
     @Override
     public boolean userExists(String username) {
         return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
     }
 }

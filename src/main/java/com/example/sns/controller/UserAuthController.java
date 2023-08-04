@@ -1,5 +1,7 @@
 package com.example.sns.controller;
 
+import com.example.sns.dto.JwtTokenDto;
+import com.example.sns.dto.LoginDto;
 import com.example.sns.dto.RegisterDto;
 import com.example.sns.dto.ResponseDto;
 import com.example.sns.service.UserService;
@@ -22,5 +24,10 @@ public class UserAuthController {
     public ResponseDto signup(@Valid @RequestBody RegisterDto dto) {
         log.info(dto.toString());
         return userService.registerUser(dto);
+    }
+
+    @PostMapping("/login")
+    public JwtTokenDto login(@Valid @RequestBody LoginDto dto){
+        return userService.loginUser(dto);
     }
 }

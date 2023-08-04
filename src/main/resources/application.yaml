@@ -23,5 +23,5 @@ spring:
 #    init:
 #      mode: always
 # ?? ??? ? ??
-#jwt:
-#  secret: aaaabbbsdifqbvaesoioegwaaaabbbsdifqbvaesoioegwaaaabbbsdifqbvaesasdfqve
+jwt:
+  secret: aaaabbbsdifqbvaesoioegwaaaabbbsdifqbvaesoioegwaaaabbbsdifqbvaesasdfqve
