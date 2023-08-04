@@ -26,6 +26,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// sqlite
+	runtimeOnly 'org.xerial:sqlite-jdbc:3.41.2.2'
+	runtimeOnly 'org.hibernate.orm:hibernate-community-dialects:6.2.4.Final'
+
+	// security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
