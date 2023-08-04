@@ -2,10 +2,7 @@ package com.example.sns.entity;
 
 import com.example.sns.entity.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -29,8 +26,8 @@ public class User {
 
     private String email;
     private String phone;
-
-    private String profile_img;
+    @Setter
+    private String profileImgUrl;
 
     @OneToMany(fetch = LAZY, mappedBy = "user")
     private List<Comment> comments;

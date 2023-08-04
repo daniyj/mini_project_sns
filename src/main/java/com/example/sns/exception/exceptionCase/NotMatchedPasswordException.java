@@ -1,4 +1,4 @@
-package com.example.sns.exception;
+package com.example.sns.exception.exceptionCase;
 
 import com.example.sns.exception.status.Status400Exception;
 

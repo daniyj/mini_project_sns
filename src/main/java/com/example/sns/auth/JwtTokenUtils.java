@@ -47,6 +47,7 @@ public class JwtTokenUtils {
             return true;
         } catch (Exception e) {
             log.warn("invalid jwt");
+//            e.printStackTrace();
         }
         return false;
     }
