@@ -4,6 +4,7 @@ import com.example.sns.entity.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -30,13 +31,13 @@ public class User {
     private String profileImgUrl;
 
     @OneToMany(fetch = LAZY, mappedBy = "user")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(fetch = LAZY, mappedBy = "user")
-    private List<Feed> feeds;
+    private List<Feed> feeds = new ArrayList<>();
 
     @OneToMany(fetch = LAZY, mappedBy = "user")
-    private List<LikeFeed> likeFeeds; // 유저가 누른 좋아요
+    private List<LikeFeed> likeFeeds = new ArrayList<>(); // 유저가 누른 좋아요
 
     // follow, friends 추후 다시
 //    @ManyToMany
