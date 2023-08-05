@@ -75,7 +75,7 @@ public class UserService {
 
         User userEntity = userRepository.findByUsername(username).orElseThrow(
                 ()-> new NotFoundUsernameException());
-
+        // 폴더 만들기
         String itemDirPath = String.format("image/%s/", username);
 
         try {

@@ -33,10 +33,10 @@ public class User {
     private List<Comment> comments;
 
     @OneToMany(fetch = LAZY, mappedBy = "user")
-    private List<Article> articles;
+    private List<Feed> feeds;
 
     @OneToMany(fetch = LAZY, mappedBy = "user")
-    private List<LikeArticle> likeArticles; // 유저가 누른 좋아요
+    private List<LikeFeed> likeFeeds; // 유저가 누른 좋아요
 
     // follow, friends 추후 다시
 //    @ManyToMany

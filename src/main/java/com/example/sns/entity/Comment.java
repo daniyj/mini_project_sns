@@ -21,8 +21,8 @@ public class Comment {
     private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "article_id")
-    private Article article;
+    @JoinColumn(name = "feed_id")
+    private Feed feed;
 
     private String content;
 }

@@ -15,7 +15,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Article {
+public class Feed {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +30,10 @@ public class Article {
     private Boolean draft;
     private LocalDateTime deletedAt;
 
-    @OneToMany(fetch = LAZY, mappedBy = "article")
-    private List<ArticleImages> articleImages = new ArrayList<>();
+    @OneToMany(fetch = LAZY, mappedBy = "feed")
+    private List<FeedImages> feedImages = new ArrayList<>();
 
-    @OneToMany(fetch = LAZY, mappedBy = "article")
+    @OneToMany(fetch = LAZY, mappedBy = "feed")
     private List<Comment> comments = new ArrayList<>();
 
 //    @OneToMany(mappedBy = "article")
