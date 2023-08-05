@@ -1,16 +1,16 @@
 package com.example.sns.service;
 
-import com.example.sns.dto.FeedDto;
+import com.example.sns.dto.FeedListDto;
 import com.example.sns.dto.ResponseDto;
 import com.example.sns.entity.Feed;
 import com.example.sns.entity.FeedImages;
 import com.example.sns.entity.User;
 import com.example.sns.exception.exceptionCase.ImageUpdateException;
+import com.example.sns.exception.exceptionCase.NotFoundUsernameException;
 import com.example.sns.repository.FeedImagesRepository;
 import com.example.sns.repository.FeedRepository;
 import com.example.sns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -31,7 +32,9 @@ public class FeedService {
     public ResponseDto createFeed(String title,String content, Authentication authentication, List<MultipartFile> images) {
 
         // 유저 정보 받아오기
-        User user = userRepository.findByUsername(authentication.getName()).orElseThrow();
+        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(
+                ()-> new NotFoundUsernameException());
+
 
         // 게시글 저장하기
         Feed feedEntity = Feed.builder()
@@ -78,7 +81,7 @@ public class FeedService {
 
         String[] filenameSplit = originalFilename.split("\\.");
         String extension = filenameSplit[filenameSplit.length-1];
-        String profileFilename = "image." + extension;
+        String profileFilename = filenameSplit[0] + "_" + LocalDate.now() + "." + extension;
 
         String profilePath = itemDirPath + profileFilename;
 
@@ -93,6 +96,16 @@ public class FeedService {
 //        userEntity.setProfileImgUrl(String.format("/static/%s/%s",username,profileFilename));
 
         return String.format("/static/%s/%s",username,profileFilename);
+    }
+    //반환값 변경하기
+    public List<FeedListDto> readAllFeeds(String username) {
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+                ()-> new NotFoundUsernameException());
+
+       log.info(user.getProfileImgUrl());
+
+        return null;
     }
 }
 

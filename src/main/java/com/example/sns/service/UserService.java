@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
 
 @Slf4j
 @Service
@@ -89,7 +90,7 @@ public class UserService {
 
         String[] filenameSplit = originalFilename.split("\\.");
         String extension = filenameSplit[filenameSplit.length-1];
-        String profileFilename = "image." + extension;
+        String profileFilename = filenameSplit[0] + "_" + LocalDate.now() + "." + extension;
 
         String profilePath = itemDirPath + profileFilename;
 
