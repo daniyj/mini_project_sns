@@ -9,6 +9,4 @@ public class FeedRequestDto {
     private String title;
     @NotBlank(message = "내용은 필수입니다.")
     private String content;
-    // 추후 확인 필요
-//    private List<String> ImageUrl;
 }

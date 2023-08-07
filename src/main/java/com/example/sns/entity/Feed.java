@@ -29,16 +29,16 @@ public class Feed {
 
     private String title;
     private String content;
-    private Boolean draft;
+    private Boolean draft; // true:초안, false:작성완료
     private LocalDateTime deletedAt;
 
-    @OneToMany(fetch = LAZY, mappedBy = "feed")
-    private List<FeedImages> feedImages = new ArrayList<>();
+    @OneToMany(mappedBy = "feed")
+    private List<FeedImage> feedImages = new ArrayList<>();
 
     @OneToMany(fetch = LAZY, mappedBy = "feed")
     private List<Comment> comments = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "article")
-//    private List<LikeArticle> likeArticles;
+    @OneToMany(fetch = LAZY, mappedBy = "feed")
+    private List<LikeFeed> likeFeeds = new ArrayList<>();
 
 }

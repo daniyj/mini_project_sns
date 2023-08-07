@@ -1,5 +1,6 @@
 package com.example.sns.controller;
 
+import com.example.sns.dto.FeedInfoDto;
 import com.example.sns.dto.FeedListDto;
 import com.example.sns.dto.FeedRequestDto;
 import com.example.sns.dto.ResponseDto;
@@ -31,9 +32,14 @@ public class FeedController {
     }
 
     // 사용자가 작성한 피드 전체 조회
-    // 반환값 변경해야함
     @GetMapping("/{username}")
     public List<FeedListDto> readAllFeeds(@PathVariable("username") String username) {
         return feedService.readAllFeeds(username);
     }
+    // 피드 단독 조회
+    @GetMapping("/{feedId}/readOne")
+    public FeedInfoDto readOneFeed(@PathVariable("feedId") Long feedId) {
+        return feedService.readOneFeed(feedId);
+    }
+    // 제목, 내용, 이미지 url들, 댓글 목록, 좋아요
 }

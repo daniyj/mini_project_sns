@@ -1,17 +1,20 @@
 package com.example.sns.service;
 
+import com.example.sns.dto.CommentDto;
+import com.example.sns.dto.FeedInfoDto;
 import com.example.sns.dto.FeedListDto;
 import com.example.sns.dto.ResponseDto;
-import com.example.sns.entity.Feed;
-import com.example.sns.entity.FeedImages;
-import com.example.sns.entity.User;
+import com.example.sns.entity.*;
 import com.example.sns.exception.exceptionCase.ImageUpdateException;
+import com.example.sns.exception.exceptionCase.NotFoundFeedException;
 import com.example.sns.exception.exceptionCase.NotFoundUsernameException;
+import com.example.sns.repository.CommentRepository;
 import com.example.sns.repository.FeedImagesRepository;
 import com.example.sns.repository.FeedRepository;
 import com.example.sns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +33,7 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final FeedImagesRepository feedImagesRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     public ResponseDto createFeed(String title,String content, Authentication authentication, List<MultipartFile> images) {
 
         // 유저 정보 받아오기
@@ -52,7 +56,7 @@ public class FeedService {
                 String imageUrl = uploadImage(image,authentication.getName());
 
                 // 이미지 정보 저장
-                FeedImages feedImage = FeedImages.builder()
+                FeedImage feedImage = FeedImage.builder()
                         .feed(feedEntity)
                         .imageUrl(imageUrl)
                         .build();
@@ -99,7 +103,6 @@ public class FeedService {
 
         return String.format("/static/%s/%s",username,profileFilename);
     }
-    // 반환값 변경하기
     public List<FeedListDto> readAllFeeds(String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow(
@@ -111,7 +114,7 @@ public class FeedService {
             feedListDto.setUsername(user.getUsername());
             feedListDto.setTitle(feed.getTitle());
             feedListDto.setRepresentativeImageUrl(feedImagesRepository.findTopByFeedId(feed.getId())
-                            .map(feedImages -> feedImages.getImageUrl())
+                            .map(feedImage -> feedImage.getImageUrl())
                             .orElse("static/image/basis/feed.png"));
             feedLists.add(feedListDto);
 
@@ -120,5 +123,53 @@ public class FeedService {
 
         return feedLists;
     }
+    // TODO 피드 단독 조회시, 피드에 연관된 모든 정보가 포함되어야 한다.
+    // TODO 이는 등록된 모든 이미지를 확인할 수 있는 각각의 URL과, 댓글 목록, 좋아요의 숫자를 포함한다.
+    public FeedInfoDto readOneFeed(Long feedId) {
+//        User userEntity = userRepository.findByUsername(username).orElseThrow(
+//                ()-> new NotFoundUsernameException());
+
+//        // 피드의 작성자가 유저(username)와 일치하지 않을 때
+//        if(!feedId.equals(feedRepository.findUserIdById(feedId)))
+//            throw new NotMatchedUserException();
+
+        Feed feedEntity = feedRepository.findById(feedId).orElseThrow(
+                ()-> new NotFoundFeedException());
+
+        FeedInfoDto feedInfoDto = new FeedInfoDto();
+        feedInfoDto.setTitle(feedEntity.getTitle());
+        feedInfoDto.setContent(feedEntity.getContent());
+
+        // 댓글, 이미지 url들, 좋아요 수 가 문제다.
+        // TODO 댓글, 좋아요 수 보류(기능 아직 넣기 전이라)
+        // TODO 문제 - ImageUrl이 불러와지지 않는다. 조회가 되지 않아 size도 0으로 뜬다.
+        log.info("readOneFeed 실행중");
+        List<String> feedImageUrls = new ArrayList<>();
+        log.info("size="+feedImagesRepository.findAllByFeedId(feedEntity.getId()).size()+"");
+        log.info("size="+feedEntity.getFeedImages().size()+"");
+        Long feedID = feedEntity.getId();
+        log.info("feedID="+feedID);
+        // feedEntity.getFeedImages()로 조회해도
+        // feedImagesRepository.findAllByFeedId(feedEntity.getId())로 조회해도 안된다.
+        for (FeedImage feedImage : feedEntity.getFeedImages()) {
+            String url = feedImage.getImageUrl();
+            log.info("url=" + url);
+            feedImageUrls.add(url);
+        }
+        List<CommentDto> commentDtos = new ArrayList<>();
+        for (Comment comment : feedEntity.getComments()) {
+            CommentDto commentDto = new CommentDto();
+            commentDto.setContent(comment.getContent());
+            commentDto.setUsername(comment.getUser().getUsername());
+            commentDtos.add(commentDto);
+        }
+        log.info("dto url size="+feedImageUrls.size());
+        feedInfoDto.setComments(commentDtos);
+        feedInfoDto.setFeedImageUrls(feedImageUrls);
+        feedInfoDto.setLikesCount(Long.valueOf(feedEntity.getLikeFeeds().size()));
+
+        return feedInfoDto;
+    }
+
 }
 
