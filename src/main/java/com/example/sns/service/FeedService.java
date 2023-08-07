@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -46,16 +47,17 @@ public class FeedService {
         log.info(feedEntity.getTitle());
         log.info(feedEntity.getContent());
 
-        for (MultipartFile image : images) {
-            String imageUrl = uploadImage(image,authentication.getName());
+        if (images != null) {
+            for (MultipartFile image : images) {
+                String imageUrl = uploadImage(image,authentication.getName());
 
-            // 이미지 정보 저장
-            FeedImages feedImage = FeedImages.builder()
-                    .feed(feedEntity)
-                    .imageUrl(imageUrl)
-                    .build();
-            feedImagesRepository.save(feedImage);
-
+                // 이미지 정보 저장
+                FeedImages feedImage = FeedImages.builder()
+                        .feed(feedEntity)
+                        .imageUrl(imageUrl)
+                        .build();
+                feedImagesRepository.save(feedImage);
+            }
         }
         ResponseDto response = new ResponseDto();
         response.setMessage("피드가 등록되었습니다.");
@@ -97,15 +99,26 @@ public class FeedService {
 
         return String.format("/static/%s/%s",username,profileFilename);
     }
-    //반환값 변경하기
+    // 반환값 변경하기
     public List<FeedListDto> readAllFeeds(String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow(
                 ()-> new NotFoundUsernameException());
 
+        List<FeedListDto> feedLists = new ArrayList<>();
+        for (Feed feed : feedRepository.findAllByUserId(user.getId())) {
+            FeedListDto feedListDto = new FeedListDto();
+            feedListDto.setUsername(user.getUsername());
+            feedListDto.setTitle(feed.getTitle());
+            feedListDto.setRepresentativeImageUrl(feedImagesRepository.findTopByFeedId(feed.getId())
+                            .map(feedImages -> feedImages.getImageUrl())
+                            .orElse("static/image/basis/feed.png"));
+            feedLists.add(feedListDto);
+
+        }
        log.info(user.getProfileImgUrl());
 
-        return null;
+        return feedLists;
     }
 }
 

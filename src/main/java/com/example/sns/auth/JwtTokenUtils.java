@@ -32,7 +32,7 @@ public class JwtTokenUtils {
                 // 사용자 정보 등록
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(Date.from(Instant.now()))
-                .setExpiration(Date.from(Instant.now().plusSeconds(3600))); //1h
+                .setExpiration(Date.from(Instant.now().plusSeconds(7200))); //2h
 
         return Jwts.builder()
                 .setClaims(jwtClaims)
