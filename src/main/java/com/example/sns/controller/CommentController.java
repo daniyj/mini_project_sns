@@ -15,11 +15,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("feeds/{feedId}/comments")
 public class CommentController {
     private final CommentService commentService;
+    // 댓글 작성
+    // POST /feeds/{feedId}/comments
     @PostMapping
     public ResponseDto createComment(@RequestBody CommentDto commentDto,
                                      @PathVariable("feedId") Long feedId,
                                      Authentication authentication) {
-        return commentService.createComment(commentDto,feedId,authentication);
+        return commentService.createComment(commentDto, feedId, authentication);
     }
-
+    // 댓글 수정
+    // PUT /feeds/{feedId}/comments/{commentId}
+    @PutMapping("/{commentId}")
+    public ResponseDto updateComment(@RequestBody CommentDto commentDto,
+                                     @PathVariable("feedId") Long feedId,
+                                     @PathVariable("commentId") Long commentId,
+                                     Authentication authentication) {
+        return commentService.updateComment(commentDto, feedId, commentId, authentication);
+    }
 }

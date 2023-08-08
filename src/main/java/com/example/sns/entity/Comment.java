@@ -27,4 +27,8 @@ public class Comment {
     private Feed feed;
 
     private String content;
+
+    public void update(String content){
+        this.content = content;
+    }
 }

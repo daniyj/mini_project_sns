@@ -2,6 +2,7 @@ package com.example.sns.exception.handler;
 
 import com.example.sns.dto.ResponseDto;
 import com.example.sns.exception.status.Status400Exception;
+import com.example.sns.exception.status.Status403Exception;
 import com.example.sns.exception.status.Status404Exception;
 import com.example.sns.exception.status.Status500Exception;
 import io.jsonwebtoken.MalformedJwtException;
@@ -33,6 +34,12 @@ public class ExceptionHandlerController {
         ResponseDto response = new ResponseDto();
         response.setMessage(exception.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+    @ExceptionHandler(Status403Exception.class)
+    public ResponseEntity<ResponseDto> exception403(Status403Exception exception) {
+        ResponseDto response = new ResponseDto();
+        response.setMessage(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
     // (보류) 잘못된 토큰으로 로그인할 시 에러 메시지 출력

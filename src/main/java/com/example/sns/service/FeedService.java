@@ -127,12 +127,6 @@ public class FeedService {
     // TODO 피드 단독 조회시, 피드에 연관된 모든 정보가 포함되어야 한다.
     // TODO 이는 등록된 모든 이미지를 확인할 수 있는 각각의 URL과, 댓글 목록, 좋아요의 숫자를 포함한다.
     public FeedInfoDto readOneFeed(Long feedId) {
-//        User userEntity = userRepository.findByUsername(username).orElseThrow(
-//                ()-> new NotFoundUsernameException());
-
-//        // 피드의 작성자가 유저(username)와 일치하지 않을 때
-//        if(!feedId.equals(feedRepository.findUserIdById(feedId)))
-//            throw new NotMatchedUserException();
 
         Feed feedEntity = feedRepository.findById(feedId).orElseThrow(
                 ()-> new NotFoundFeedException());
