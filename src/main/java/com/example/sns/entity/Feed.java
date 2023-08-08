@@ -37,9 +37,6 @@ public class Feed {
     @OneToMany(fetch = LAZY, mappedBy = "feed")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(fetch = LAZY, mappedBy = "feed")
-    private List<LikeFeed> likeFeeds = new ArrayList<>();
-
     public void update(String title, String content) {
         this.title = title;
         this.content = content;

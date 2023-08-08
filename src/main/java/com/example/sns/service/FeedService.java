@@ -128,12 +128,12 @@ public class FeedService {
     // TODO 이는 등록된 모든 이미지를 확인할 수 있는 각각의 URL과, 댓글 목록, 좋아요의 숫자를 포함한다.
     public FeedInfoDto readOneFeed(Long feedId) {
 
-        Feed feedEntity = feedRepository.findById(feedId).orElseThrow(
+        Feed feed = feedRepository.findById(feedId).orElseThrow(
                 ()-> new NotFoundFeedException());
 
         FeedInfoDto feedInfoDto = new FeedInfoDto();
-        feedInfoDto.setTitle(feedEntity.getTitle());
-        feedInfoDto.setContent(feedEntity.getContent());
+        feedInfoDto.setTitle(feed.getTitle());
+        feedInfoDto.setContent(feed.getContent());
 
         // 댓글, 이미지 url들, 좋아요 수
         // TODO 댓글, 좋아요 수 보류(기능 아직 넣기 전이라)
@@ -141,20 +141,20 @@ public class FeedService {
         // 위의 메소드 readAllFeeds()에서는 정상적으로 조회가 되었는데 왜 안될까..??
         log.info("readOneFeed 실행중");
         List<String> feedImageUrls = new ArrayList<>();
-        log.info("top="+feedImagesRepository.findTopByFeedId(feedEntity.getId()).toString());
-        log.info("size="+feedImagesRepository.findAllByFeedId(feedEntity.getId()).size()+"");
-        log.info("size="+feedEntity.getFeedImages().size()+"");
-        Long feedID = feedEntity.getId();
+        log.info("top="+feedImagesRepository.findTopByFeedId(feed.getId()).toString());
+        log.info("size="+feedImagesRepository.findAllByFeedId(feed.getId()).size()+"");
+        log.info("size="+feed.getFeedImages().size()+"");
+        Long feedID = feed.getId();
         log.info("feedID="+feedID);
-        // feedEntity.getFeedImages()로 조회해도
-        // feedImagesRepository.findAllByFeedId(feedEntity.getId())로 조회해도 안된다.
-        for (FeedImage feedImage : feedImagesRepository.findAllByFeed(feedEntity)) {
+        // feed.getFeedImages()로 조회해도
+        // feedImagesRepository.findAllByFeedId(feed.getId())로 조회해도 안된다.
+        for (FeedImage feedImage : feedImagesRepository.findAllByFeed(feed)) {
             String url = feedImage.getImageUrl();
             log.info("url=" + url);
             feedImageUrls.add(url);
         }
         List<CommentDto> commentDtos = new ArrayList<>();
-        for (Comment comment : feedEntity.getComments()) {
+        for (Comment comment : feed.getComments()) {
             CommentDto commentDto = new CommentDto();
             commentDto.setContent(comment.getContent());
             //삭제된 댓글일 경우 유저네임 보이지않도록 처리
@@ -167,7 +167,7 @@ public class FeedService {
         log.info("dto url size="+feedImageUrls.size());
         feedInfoDto.setComments(commentDtos);
         feedInfoDto.setFeedImageUrls(feedImageUrls);
-        feedInfoDto.setLikesCount(Long.valueOf(feedEntity.getLikeFeeds().size()));
+//        feedInfoDto.setLikesCount(Long.valueOf(feed.getLikeFeeds().size()));
 
         return feedInfoDto;
     }

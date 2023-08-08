@@ -37,7 +37,7 @@ public class User {
     private List<Feed> feeds = new ArrayList<>();
 
     @OneToMany(fetch = LAZY, mappedBy = "user")
-    private List<LikeFeed> likeFeeds = new ArrayList<>(); // 유저가 누른 좋아요
+    private List<Like> likes = new ArrayList<>(); // 유저가 누른 좋아요
 
     // follow, friends 추후 다시
 //    @ManyToMany
