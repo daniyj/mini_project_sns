@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -224,6 +225,44 @@ public class FeedService {
 
         ResponseDto response = new ResponseDto();
         response.setMessage("피드가 수정되었습니다.");
+        return response;
+    }
+
+    public ResponseDto deleteFeed(Long feedId) {
+        // 피드 정보 받아오기
+        Feed feed = feedRepository.findById(feedId).orElseThrow(
+                ()->new NotFoundFeedException());
+        // 삭제 시간 기록
+        String time = LocalDateTime.now().toString().split("\\.")[0];
+        feed.setDeletedAt(time);
+        feedRepository.save(feed);
+
+        // 피드에 삭제 정보 기록
+        feed.update("삭제된 게시글","삭제된 게시글입니다.");
+
+        // 기존 이미지 삭제
+        List<FeedImage> feedImages = feedImagesRepository.findAllByFeed(feed);
+        String imageDirPath = String.format("image/feed/%s/", feed.getUser().getUsername());
+        String imageUrl = String.format("/static/feed/%d/",feed.getId());
+
+        for (FeedImage feedImage : feedImages) {
+            String fileName = feedImage.getImageUrl().replace(imageUrl, "");
+            try {
+                Path imagePath = Path.of(imageDirPath + fileName);
+                boolean isDeleted = Files.deleteIfExists(imagePath);
+                if (isDeleted)
+                    log.info("Image deleted:"+imagePath);
+                else
+                    log.warn("Image not deleted: " + imagePath);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            feedImagesRepository.delete(feedImage);
+        }
+
+        ResponseDto response = new ResponseDto();
+        response.setMessage("피드가 삭제되었습니다.");
         return response;
     }
 }

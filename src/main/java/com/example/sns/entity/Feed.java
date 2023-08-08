@@ -2,10 +2,7 @@ package com.example.sns.entity;
 
 import com.example.sns.dto.FeedRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,7 +28,8 @@ public class Feed {
     private String title;
     private String content;
     private Boolean draft; // true:초안, false:작성완료
-    private LocalDateTime deletedAt;
+    @Setter
+    private String deletedAt;
 
     @OneToMany(mappedBy = "feed")
     private List<FeedImage> feedImages = new ArrayList<>();

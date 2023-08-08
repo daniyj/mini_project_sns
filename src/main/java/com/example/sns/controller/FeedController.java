@@ -57,6 +57,12 @@ public class FeedController {
     }
 
     // 피드 삭제
+    // 실제 삭제가 아닌 삭제 기록을 남긴다.
+    @PutMapping("/{feedId}/deleted")
+    public ResponseDto deleteFeed(@PathVariable("feedId") Long feedId) {
+        return feedService.deleteFeed(feedId);
+    }
+
 
 
 }
