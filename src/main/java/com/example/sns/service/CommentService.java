@@ -52,13 +52,26 @@ public class CommentService {
         // 댓글의 작성자인지 확인
         if(!comment.getUser().getUsername().equals(authentication.getName()))
             new NoAuthUserException();
-        log.info("dto.getcontetn()="+commentDto.getContent());
         comment.update(commentDto.getContent());
         commentRepository.save(comment);
-        log.info("comment.content"+comment.getContent());
 
         ResponseDto response = new ResponseDto();
         response.setMessage("댓글이 수정되었습니다.");
+        return response;
+    }
+    public ResponseDto deleteComment(Long feedId, Long commentId, Authentication authentication) {
+        Feed feed = feedRepository.findById(feedId).orElseThrow(
+                ()-> new NotFoundFeedException());
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new NotFoundCommentException());
+        // 댓글의 작성자인지 확인
+        if(!comment.getUser().getUsername().equals(authentication.getName()))
+            new NoAuthUserException();
+        comment.update("삭제된 댓글입니다.");
+        commentRepository.save(comment);
+
+        ResponseDto response = new ResponseDto();
+        response.setMessage("댓글이 삭제되었습니다.");
         return response;
     }
 

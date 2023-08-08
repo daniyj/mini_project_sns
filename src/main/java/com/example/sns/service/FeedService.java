@@ -157,7 +157,11 @@ public class FeedService {
         for (Comment comment : feedEntity.getComments()) {
             CommentDto commentDto = new CommentDto();
             commentDto.setContent(comment.getContent());
-            commentDto.setUsername(comment.getUser().getUsername());
+            //삭제된 댓글일 경우 유저네임 보이지않도록 처리
+            if(comment.getContent().equals("삭제된 댓글입니다."))
+                commentDto.setUsername(comment.getUser().getUsername());
+            else
+                commentDto.setUsername("삭제된 댓글");
             commentDtos.add(commentDto);
         }
         log.info("dto url size="+feedImageUrls.size());

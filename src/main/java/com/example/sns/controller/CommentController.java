@@ -32,4 +32,12 @@ public class CommentController {
                                      Authentication authentication) {
         return commentService.updateComment(commentDto, feedId, commentId, authentication);
     }
+    // 댓글 삭제
+    // PUT
+    @PutMapping("/{commentId}/deleted")
+    public ResponseDto deleteComment(@PathVariable("feedId") Long feedId,
+                                     @PathVariable("commentId") Long commentId,
+                                     Authentication authentication){
+        return commentService.deleteComment(feedId, commentId, authentication);
+    }
 }
