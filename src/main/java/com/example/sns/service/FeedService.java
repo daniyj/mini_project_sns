@@ -49,8 +49,6 @@ public class FeedService {
                 .user(user)
                 .build();
         feedRepository.save(feed);
-        log.info(feed.getTitle());
-        log.info(feed.getContent());
 
         if (images != null) {
             for (MultipartFile image : images) {
@@ -156,7 +154,7 @@ public class FeedService {
         log.info("feedID="+feedID);
         // feedEntity.getFeedImages()로 조회해도
         // feedImagesRepository.findAllByFeedId(feedEntity.getId())로 조회해도 안된다.
-        for (FeedImage feedImage : feedEntity.getFeedImages()) {
+        for (FeedImage feedImage : feedImagesRepository.findAllByFeed(feedEntity)) {
             String url = feedImage.getImageUrl();
             log.info("url=" + url);
             feedImageUrls.add(url);

@@ -26,7 +26,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/auth/**")
                         .anonymous()
-                        .requestMatchers("/error","/feeds")
+                        .requestMatchers("/error","/feeds/list/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
