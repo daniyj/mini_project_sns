@@ -184,11 +184,10 @@ PUT /feeds/{feedId}/likes <br>
 <summary>Json List </summary>
 <div markdown="1">
 위치는 루트 디렉토리에 있습니다.<br>
-Project_2_ShinYeji\postman collection
-
-(project2) auth & upload profile image<br>
-(project2) feeds & likes<br>
-(project2) comments<br>
+Project_2_ShinYeji\postman collection<br><br>
+1. (project2) auth & upload profile image<br>
+2. (project2) feeds & likes<br>
+3. (project2) comments<br>
 </div>
 </details>
 
