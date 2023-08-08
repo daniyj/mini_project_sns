@@ -1,5 +1,6 @@
 package com.example.sns.entity;
 
+import com.example.sns.dto.FeedRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,4 +42,8 @@ public class Feed {
     @OneToMany(fetch = LAZY, mappedBy = "feed")
     private List<LikeFeed> likeFeeds = new ArrayList<>();
 
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

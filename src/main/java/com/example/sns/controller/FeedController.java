@@ -32,14 +32,31 @@ public class FeedController {
     }
 
     // 사용자가 작성한 피드 전체 조회
-    @GetMapping("/{username}")
+    // GET /feeds/{username}
+    @GetMapping("/list/{username}")
     public List<FeedListDto> readAllFeeds(@PathVariable("username") String username) {
         return feedService.readAllFeeds(username);
     }
+    // 진행중
+    // 제목, 내용, 이미지 url들, 댓글 목록, 좋아요
     // 피드 단독 조회
-    @GetMapping("/{feedId}/readOne")
+    // GET /feeds/{feedId}/readOne
+    @GetMapping("/{feedId}")
     public FeedInfoDto readOneFeed(@PathVariable("feedId") Long feedId) {
         return feedService.readOneFeed(feedId);
     }
-    // 제목, 내용, 이미지 url들, 댓글 목록, 좋아요
+
+    // 피드 수정
+    @PutMapping(value = "{feedId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseDto updateFeed(@PathVariable("feedId")Long feedId,
+                                  @RequestParam(required = false) List<MultipartFile> images,
+                                  @RequestParam String title,
+                                  @RequestParam String content,
+                                  Authentication authentication) throws IOException {
+        return feedService.updateFeed(feedId,title,content,authentication,images);
+    }
+
+    // 피드 삭제
+
+
 }

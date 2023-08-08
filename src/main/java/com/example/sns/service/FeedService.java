@@ -42,22 +42,23 @@ public class FeedService {
 
 
         // 게시글 저장하기
-        Feed feedEntity = Feed.builder()
+        Feed feed = Feed.builder()
                 .title(title)
                 .content(content)
                 .user(user)
                 .build();
-        feedRepository.save(feedEntity);
-        log.info(feedEntity.getTitle());
-        log.info(feedEntity.getContent());
+        feedRepository.save(feed);
+        log.info(feed.getTitle());
+        log.info(feed.getContent());
 
         if (images != null) {
             for (MultipartFile image : images) {
-                String imageUrl = uploadImage(image,authentication.getName());
+                String profileFilename = uploadImage(image,authentication.getName());
+                String imageUrl = String.format("/static/feed/%d/%s",feed.getId(),profileFilename);
 
                 // 이미지 정보 저장
                 FeedImage feedImage = FeedImage.builder()
-                        .feed(feedEntity)
+                        .feed(feed)
                         .imageUrl(imageUrl)
                         .build();
                 feedImagesRepository.save(feedImage);
@@ -72,11 +73,11 @@ public class FeedService {
     private String uploadImage(MultipartFile image,String username) {
 
         // 폴더 만들기
-        String itemDirPath = String.format("image/feed/%s/", username);
+        String imageDirPath = String.format("image/feed/%s/", username);
         // 폴더가 존재하지 않을 시
-        if (!Files.exists(Path.of(itemDirPath))){
+        if (!Files.exists(Path.of(imageDirPath))){
             try {
-                Files.createDirectories(Path.of(itemDirPath));
+                Files.createDirectories(Path.of(imageDirPath));
             } catch (IOException e) {
                 throw new ImageUpdateException();
             }
@@ -89,7 +90,7 @@ public class FeedService {
         String extension = filenameSplit[filenameSplit.length-1];
         String profileFilename = filenameSplit[0] + "_" + LocalDate.now() + "." + extension;
 
-        String profilePath = itemDirPath + profileFilename;
+        String profilePath = imageDirPath + profileFilename;
 
         // MultipartFile 저장
         try{
@@ -101,7 +102,8 @@ public class FeedService {
 
 //        userEntity.setProfileImgUrl(String.format("/static/%s/%s",username,profileFilename));
 
-        return String.format("/static/%s/%s",username,profileFilename);
+//        return String.format("/static/%s/%s",username,profileFilename);
+        return profileFilename;
     }
     public List<FeedListDto> readAllFeeds(String username) {
 
@@ -140,11 +142,13 @@ public class FeedService {
         feedInfoDto.setTitle(feedEntity.getTitle());
         feedInfoDto.setContent(feedEntity.getContent());
 
-        // 댓글, 이미지 url들, 좋아요 수 가 문제다.
+        // 댓글, 이미지 url들, 좋아요 수
         // TODO 댓글, 좋아요 수 보류(기능 아직 넣기 전이라)
         // TODO 문제 - ImageUrl이 불러와지지 않는다. 조회가 되지 않아 size도 0으로 뜬다.
+        // 위의 메소드 readAllFeeds()에서는 정상적으로 조회가 되었는데 왜 안될까..??
         log.info("readOneFeed 실행중");
         List<String> feedImageUrls = new ArrayList<>();
+        log.info("top="+feedImagesRepository.findTopByFeedId(feedEntity.getId()).toString());
         log.info("size="+feedImagesRepository.findAllByFeedId(feedEntity.getId()).size()+"");
         log.info("size="+feedEntity.getFeedImages().size()+"");
         Long feedID = feedEntity.getId();
@@ -171,5 +175,56 @@ public class FeedService {
         return feedInfoDto;
     }
 
+    public ResponseDto updateFeed(Long feedId,String title, String content, Authentication authentication, List<MultipartFile> images) {
+        // 유저 정보 받아오기
+        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(
+                ()-> new NotFoundUsernameException());
+        // 피드 정보 받아오기
+        Feed feed = feedRepository.findById(feedId).orElseThrow(
+                ()->new NotFoundFeedException());
+
+        // 게시글 업데이트
+        feed.update(title, content);
+
+        // 기존 이미지 삭제
+        List<FeedImage> feedImages = feedImagesRepository.findAllByFeed(feed);
+        String imageDirPath = String.format("image/feed/%s/", user.getUsername());
+        String imageUrl = String.format("/static/feed/%d/",feed.getId());
+
+        for (FeedImage feedImage : feedImages) {
+            String fileName = feedImage.getImageUrl().replace(imageUrl, "");
+            try {
+                Path imagePath = Path.of(imageDirPath + fileName);
+                boolean isDeleted = Files.deleteIfExists(imagePath);
+                if (isDeleted)
+                    log.info("Image deleted:"+imagePath);
+                else
+                    log.warn("Image not deleted: " + imagePath);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            feedImagesRepository.delete(feedImage);
+        }
+
+        // 새 이미지 업데이트
+        if (images != null) {
+            for (MultipartFile image : images) {
+                String profileFilename = uploadImage(image,authentication.getName());
+                String imageUrl2 = String.format("/static/feed/%d/%s",feed.getId(),profileFilename);
+                // 이미지 정보 저장
+                FeedImage feedImage = FeedImage.builder()
+                        .feed(feed)
+                        .imageUrl(imageUrl2)
+                        .build();
+                feedImagesRepository.save(feedImage);
+            }
+        }
+        feedRepository.save(feed);
+
+        ResponseDto response = new ResponseDto();
+        response.setMessage("피드가 수정되었습니다.");
+        return response;
+    }
 }
 
