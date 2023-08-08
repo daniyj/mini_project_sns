@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "3d36bb58-6e85-4024-ac0d-f3f2b7ba7746",
+		"name": "(project2) comments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28055555"
+	},
+	"item": [
+		{
+			"name": "POST /feeds/comments/",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTQ4MjgwNywiZXhwIjoxNjkxNDkwMDA3fQ.8HVGOnc6vibBS1KBPVxJ4259GJKSUUL9rVbOwMMMOtLxSsEoFdx4aG4ErdlVGSisYeiclZ45YuC-kNSWI9v_kw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"댓글 내용입니다.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/feeds/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /feeds/{feedId}/comments/{commentId}",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTQ5MTQwMSwiZXhwIjoxNjkxNDk4NjAxfQ.ewK_jFZ6wyCJPPHAWi9p-XmVudEgxxJceyrrkBerVFkLZeZAR4NwhoR1xMfTtDV94SklN7B-2KRtj-VK6I_o7Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"댓글 수정할거야야 내용입니다.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/feeds/12/comments/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"12",
+						"comments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /feeds/{feedId}/comments/{commentId}/deleted",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTQ5MTQwMSwiZXhwIjoxNjkxNDk4NjAxfQ.ewK_jFZ6wyCJPPHAWi9p-XmVudEgxxJceyrrkBerVFkLZeZAR4NwhoR1xMfTtDV94SklN7B-2KRtj-VK6I_o7Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\":\"댓글 수정할거야야 내용입니다.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/feeds/12/comments/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"12",
+						"comments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

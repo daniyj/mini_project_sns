@@ -33,7 +33,7 @@ public class CommentController {
         return commentService.updateComment(commentDto, feedId, commentId, authentication);
     }
     // 댓글 삭제
-    // PUT
+    // PUT /feeds/{feedId}/comments/{commentId}/deleted
     @PutMapping("/{commentId}/deleted")
     public ResponseDto deleteComment(@PathVariable("feedId") Long feedId,
                                      @PathVariable("commentId") Long commentId,

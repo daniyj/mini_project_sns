@@ -1,0 +1,210 @@
+{
+	"info": {
+		"_postman_id": "91b23b53-ba06-4908-aca0-b7b3922cd9d6",
+		"name": "(project2) feeds & likes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28055555"
+	},
+	"item": [
+		{
+			"name": "POST /feeds 피드 생성",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTM4MTQxNCwiZXhwIjoxNjkxMzg4NjE0fQ.jBivZk02gfJ0zr7mg8u_iAkLSQ_2867Uwf0IPVeCCsf1BmsJ_ClVTy6iKDdoxYH-purBj7JG45kMOBcgHegbBQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "images",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/feeds/dani",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"dani"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /feeds/list/{username} 피드리스트 조회",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTM5OTA2OCwiZXhwIjoxNjkxNDA2MjY4fQ.vdFifMHG60ZOpwfjXqNbvyjLKzCGmRS36siu6qRPQ6tjN1hxpLqKurR5aMLqtX9ZGO1uRrv90tZFJeQwdNJN3g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feeds/list/dani2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"list",
+						"dani2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /feeds/{feedId} 피드 단독 조회",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTM5OTA2OCwiZXhwIjoxNjkxNDA2MjY4fQ.vdFifMHG60ZOpwfjXqNbvyjLKzCGmRS36siu6qRPQ6tjN1hxpLqKurR5aMLqtX9ZGO1uRrv90tZFJeQwdNJN3g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feeds/15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"15"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /feeds/{feedId} 피드 수정",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTM5OTA2OCwiZXhwIjoxNjkxNDA2MjY4fQ.vdFifMHG60ZOpwfjXqNbvyjLKzCGmRS36siu6qRPQ6tjN1hxpLqKurR5aMLqtX9ZGO1uRrv90tZFJeQwdNJN3g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feeds/15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"15"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /feeds/{feedId}/deleted 피드 삭제",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTQ3MzI3MCwiZXhwIjoxNjkxNDgwNDcwfQ.k6k-T-hI_9kVUIC78aojU-dZjEdUyEIQKGmuTrCbJDEbwTgEFR8-pIW1j32dbKgA-bvaw3Jk3u7Y368mtcRdVQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feeds/4/deleted",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"4",
+						"deleted"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /feeds/{feedId}/likes",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkYW5pMiIsImlhdCI6MTY5MTQ3MzI3MCwiZXhwIjoxNjkxNDgwNDcwfQ.k6k-T-hI_9kVUIC78aojU-dZjEdUyEIQKGmuTrCbJDEbwTgEFR8-pIW1j32dbKgA-bvaw3Jk3u7Y368mtcRdVQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feeds/4/deleted",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feeds",
+						"4",
+						"deleted"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
