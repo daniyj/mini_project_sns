@@ -1,19 +1,14 @@
 package com.example.sns.service;
 
 import com.example.sns.auth.JwtTokenUtils;
-import com.example.sns.dto.JwtTokenDto;
-import com.example.sns.dto.LoginDto;
-import com.example.sns.dto.RegisterDto;
-import com.example.sns.dto.ResponseDto;
+import com.example.sns.dto.*;
 import com.example.sns.entity.CustomUserDetails;
 import com.example.sns.entity.User;
-import com.example.sns.exception.exceptionCase.DuplicateUsernameException;
-import com.example.sns.exception.exceptionCase.ImageUpdateException;
-import com.example.sns.exception.exceptionCase.NotFoundUsernameException;
-import com.example.sns.exception.exceptionCase.NotMatchedPasswordException;
+import com.example.sns.exception.exceptionCase.*;
 import com.example.sns.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -72,10 +67,13 @@ public class UserService {
         return jwtToken;
     }
 
-    public ResponseDto updateUserImage(String username, MultipartFile image) {
+    public ResponseDto updateUserImage(String username, MultipartFile image, Authentication authentication) {
 
         User userEntity = userRepository.findByUsername(username).orElseThrow(
                 ()-> new NotFoundUsernameException());
+        if(!username.equals(authentication.getName()))
+            throw new NoAuthUserException();
+
         // 폴더 만들기
         String itemDirPath = String.format("image/userProfile/%s/", username);
 
@@ -110,5 +108,14 @@ public class UserService {
         response.setMessage("이미지가 등록되었습니다.");
 
         return response;
+    }
+
+    public UserInfoDto readUserProfile(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                ()-> new NotFoundUsernameException());
+        UserInfoDto infoDto = new UserInfoDto();
+        infoDto.setUsername(username);
+        infoDto.setProfileImageUrl(user.getProfileImgUrl());
+        return infoDto;
     }
 }
