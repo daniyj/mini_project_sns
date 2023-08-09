@@ -124,8 +124,6 @@ public class FeedService {
 
         return feedLists;
     }
-    // TODO 피드 단독 조회시, 피드에 연관된 모든 정보가 포함되어야 한다.
-    // TODO 이는 등록된 모든 이미지를 확인할 수 있는 각각의 URL과, 댓글 목록, 좋아요의 숫자를 포함한다.
     public FeedInfoDto readOneFeed(Long feedId) {
 
         Feed feed = feedRepository.findById(feedId).orElseThrow(
@@ -136,7 +134,8 @@ public class FeedService {
         feedInfoDto.setContent(feed.getContent());
 
         // 댓글, 이미지 url들, 좋아요 수
-        // TODO 댓글, 좋아요 수 보류(기능 아직 넣기 전이라)
+        // 제목, 내용, 댓글  (구현)
+        // 이미지 url,좋아요 수 (미구현)
         // TODO 문제 - ImageUrl이 불러와지지 않는다. 조회가 되지 않아 size도 0으로 뜬다.
         // 위의 메소드 readAllFeeds()에서는 정상적으로 조회가 되었는데 왜 안될까..??
         log.info("readOneFeed 실행중");

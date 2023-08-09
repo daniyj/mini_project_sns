@@ -174,6 +174,10 @@ PUT /feeds/{feedId}/likes <br>
 <details>
 <summary>4️⃣ 사용자 정보 구현</summary>
 <div markdown="1">
+
+**사용자 정보 조회**<br>
+GET /profile/{username}<br><br>
+이외는
 진행중
 </div>
 </details>
@@ -185,7 +189,7 @@ PUT /feeds/{feedId}/likes <br>
 <div markdown="1">
 위치는 루트 디렉토리에 있습니다.<br>
 Project_2_ShinYeji\postman collection<br><br>
-1. (project2) auth & upload profile image<br>
+1. (project2) auth & profilee<br>
 2. (project2) feeds & likes<br>
 3. (project2) comments<br>
 </div>
